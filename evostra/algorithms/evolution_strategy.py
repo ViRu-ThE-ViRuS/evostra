@@ -2,8 +2,8 @@ from __future__ import print_function
 import numpy as np
 import multiprocessing as mp
 
-np.random.seed(0)
 
+np.random.seed(0)
 
 def worker_process(arg):
     get_reward_func, weights = arg
