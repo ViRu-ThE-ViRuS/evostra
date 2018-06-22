@@ -1,22 +1,19 @@
 import numpy as np
-
-try:
-    import _pickle as pickle
-except ImportError:
-    import cPickle as pickle
+import _pickle as pickle
 
 
 class FeedForwardNetwork(object):
     def __init__(self, layer_sizes):
         self.weights = []
+        self.structure = layer_sizes
         for index in range(len(layer_sizes)-1):
             self.weights.append(np.zeros(shape=(layer_sizes[index], layer_sizes[index+1])))
 
     def predict(self, inp):
         out = np.expand_dims(inp.flatten(), 0)
-        for i, layer in enumerate(self.weights):
+        for layer in self.weights:
             out = np.dot(out, layer)
-            out = np.arctan(out)
+            out = np.maximum(out, 0)
         return out[0]
 
     def get_weights(self):
@@ -32,3 +29,6 @@ class FeedForwardNetwork(object):
     def load(self, filename='weights.pkl'):
         with open(filename, 'rb') as fp:
             self.weights = pickle.load(fp)
+
+    def __str__(self):
+        return self.structure.__str__()
